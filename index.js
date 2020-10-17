@@ -44,29 +44,29 @@ app.get('/hospdet', middleware.checkToken,function(req,res){
         res.send(result);
         });
     });
-app.get('/hospdetbyid', middleware.checkToken,function(req,res){
-        var hid=req.query.hid;
-        db.collection("hospital").find({"hospid":hid}).toArray(function(err,result){
+app.post('/hospdetbyid', middleware.checkToken,function(req,res){
+        var hid=req.body.hid;
+        db.collection("hospital").find({"hospid":req.body.hid}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
             });
     });
-app.get('/hospdetbynm', middleware.checkToken,function(req,res){
-        var hn=req.query.hn;
+app.post('/hospdetbynm', middleware.checkToken,function(req,res){
+        var hn=req.body.hn;
         db.collection("hospital").find({"hospname":new RegExp(hn,'i')}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
             });
     });
-app.get('/hospdetbyloc', middleware.checkToken,function(req,res){
-        var hloc=req.query.hloc;
+app.post('/hospdetbyloc', middleware.checkToken,function(req,res){
+        var hloc=req.body.hloc;
         db.collection("hospital").find({"hosplocation":new RegExp(hloc,'i')}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
             });
     });
-app.get('/hospdetbycont', middleware.checkToken,function(req,res){
-        var hcont=req.query.hcont;
+app.post('/hospdetbycont', middleware.checkToken,function(req,res){
+        var hcont=req.body.hcont;
         db.collection("hospital").find({"hospcontact":hcont}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
@@ -79,23 +79,23 @@ app.get('/ventdet', middleware.checkToken,function(req,res){
         res.send(result);
         });
     });
-app.get('/ventdetbyid', middleware.checkToken,function(req,res){
-        var vtid=req.query.vtid;
+app.post('/ventdetbyid', middleware.checkToken,function(req,res){
+        var vtid=req.body.vtid;
         db.collection("ventilator").find({"ventid":vtid}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
             });
 
     });
-app.get('/ventdetbystat', middleware.checkToken,function(req,res){
-        var vs=req.query.vs;
+app.post('/ventdetbystat', middleware.checkToken,function(req,res){
+        var vs=req.body.vs;
         db.collection("ventilator").find({"ventstat":vs}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
             });
     });
-app.get('/ventdetbynm', middleware.checkToken,function(req,res){
-        var hn=req.query.hn;
+app.post('/ventdetbynm', middleware.checkToken,function(req,res){
+        var hn=req.body.hn;
         db.collection("ventilator").find({"hospname":new RegExp(hn,'i')}).toArray(function(err,result){
             if(err) throw err;
             res.send(result);
@@ -103,7 +103,7 @@ app.get('/ventdetbynm', middleware.checkToken,function(req,res){
     });
 
 app.delete('/delvent', middleware.checkToken,(req,res)=>{
-    var vtid=req.query.vtid;
+    var vtid=req.body.vtid;
     try{
         db.collection("ventilator").deleteMany({"ventid":vtid});
     }
@@ -111,12 +111,12 @@ app.delete('/delvent', middleware.checkToken,(req,res)=>{
     res.send("Details of Ventilator(s) having ventilator ID as "+vtid+" has been succesfully deleted");
 });
 
-app.put('/updateventbynm', middleware.checkToken,(req,res)=>{
-    db.collection("ventilator").updateMany({"hospname":req.query.hn},[{$set:{"ventstat":req.query.vs}}]);
+app.post('/updateventbynm', middleware.checkToken,(req,res)=>{
+    db.collection("ventilator").updateMany({"hospname":req.body.hn},[{$set:{"ventstat":req.body.vs}}]);
     res.send("Details of Ventilator(s) has been succesfully Updated");
 });
-app.put('/updateventbyid', middleware.checkToken,(req,res)=>{
-        db.collection("ventilator").updateMany({"ventid":req.query.vtid},[{$set:{"ventstat":req.query.vs}}]);
+app.post('/updateventbyid', middleware.checkToken,(req,res)=>{
+        db.collection("ventilator").updateMany({"ventid":req.body.vtid},[{$set:{"ventstat":req.body.vs}}]);
     res.send("Details of Ventilator(s) has been succesfully Updated");
 });
 
